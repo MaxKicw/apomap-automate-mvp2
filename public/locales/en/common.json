@@ -1,7 +1,69 @@
 {
   "common": {
     "terms": {
-      "increment": "Increment"
+      "signIn": "Sign in",
+      "signUp": "Sign up",
+      "back": "Back"
     }
+  },
+  "index": {
+    "title": "Automate your courier service and help!",
+    "subtitle": "With apomap automate, you can define your internal courier service processes and then forget about them!",
+    "cmdk": "Click ⌘K to get started",
+    "featureSection": {
+      "title": "Briefly explained"
+    },
+    "connect": {
+      "title": "Connect interface",
+      "subtitle": "With one step, you can connect your POS system to apomap and automatically import orders"
+    },
+    "define": {
+      "title": "Define processes",
+      "subtitle": "You can digitally define your internal courier service processes in apomap intuitively. With the command interface, the drag-and-drop interface, and keyboard commands, it goes really fast"
+    },
+    "automate": {
+      "title": "Perform deliveries",
+      "subtitle": "Your defined processes are now running automatically and you can deliver packages to your courier with the apomap driver app"
+    }
+  },
+  "command": {
+    "createAccount": {
+      "title": "Create account"
+    },
+    "createHubspot": {
+      "title": "Contact sales"
+    },
+    "loading": {
+      "title": "Loading..."
+    },
+    "placeholder": "⌘K - Type what you want to do!"
+  },
+  "signUpModal": {
+    "businessName": {
+      "placeholder": "Full pharmacy name",
+      "label": "Pharmacy name"
+    },
+    "email": {
+      "placeholder": "info@pharmacy.de",
+      "label": "Email address"
+    },
+    "password": {
+      "placeholder": "at least 6 digits!",
+      "label": "Password"
+    },
+    "passwordRepeat": {
+      "placeholder": "Please repeat",
+      "label": "Password (repeat)"
+    }
+  },
+  "codeConfirmation": {
+    "title": "We have sent a code to your email {{email}}. Please enter it in the field below and confirm."
+  },
+  "onboarding": {
+    "title": "Onboarding"
+  },
+  "dashboard": {
+    "title": "Welcome, {{businessName}}!",
+    "createTask": "Create task"
   }
 }

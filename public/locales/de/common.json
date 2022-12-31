@@ -1,7 +1,69 @@
 {
   "common": {
     "terms": {
-      "increment": "Erhöhen"
+      "signIn": "Einloggen",
+      "signUp": "Anmelden",
+      "back": "Zurück"
     }
+  },
+  "index": {
+    "title": "Automatisiere deinen Botendienst und helfe damit!",
+    "subtitle": "Mit apomap automate definierst du deine internen Botendienstprozesse und kannst sie dann vergessen!",
+    "cmdk": "Klicke ⌘K um zu starten",
+    "featureSection": {
+      "title": "Der Ablauf kurz erklärt"
+    },
+    "connect": {
+      "title": "Schnittstelle verbinden",
+      "subtitle": "Mit einem Schritt können Sie ihr POS-System mit apomap verbinden und somit automatisch Aufträge importieren"
+    },
+    "define": {
+      "title": "Prozesse definieren",
+      "subtitle": "Du kannst interne Botendienstprozess digital in apomap intutiv definieren. Mit dem Befehlsinterface, dem Drag-And-Drop Interface und Tastaturbefehlen geht das richtig schnell"
+    },
+    "automate": {
+      "title": "Lieferungen durchführen",
+      "subtitle": "Deine definierten Prozesse laufen nun automatisch ab und du kannst mit der apomap Fahrer App deinen Boten die Packete ausliefern"
+    }
+  },
+  "command": {
+    "createAccount": {
+      "title": "Account erstellen"
+    },
+    "createHubspot": {
+      "title": "Sales kontaktieren"
+    },
+    "loading": {
+      "title": "Lädt..."
+    },
+    "placeholder": "⌘K - Tippe was Du machen willst!"
+  },
+  "signUpModal": {
+    "businessName": {
+      "placeholder": "Vollständiger Apothekenname",
+      "label": "Apothekenname"
+    },
+    "email": {
+      "placeholder": "info@apotheke.de",
+      "label": "E-Mail Adresse"
+    },
+    "password": {
+      "placeholder": "mindestens 6 stellig!",
+      "label": "Passwort"
+    },
+    "passwordRepeat": {
+      "placeholder": "Bitte wiederholen",
+      "label": "Passwort (wiederholen)"
+    }
+  },
+  "codeConfirmation": {
+    "title": "Wir haben dir auf deine E-Mail {{email}} ein Code gesendet. Bitte gebe diesen im unteren Feld ein und bestätige."
+  },
+  "onboarding": {
+    "title": "Andecken"
+  },
+  "dashboard": {
+    "title": "Willkommen, {{businessName}}!",
+    "createTask": "Auftrag erstellen"
   }
 }

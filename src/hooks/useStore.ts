@@ -6,4 +6,8 @@ export const useStore = create<Store>()((set) => ({
   number: 0,
   increase: (by) => set((state) => ({ number: state.number + by })),
   decrease: (by) => set((state) => ({ number: state.number - by })),
+  //Dialog-Management
+  shownDialog: { shown: false },
+  closeDialog: () => set(() => ({ shownDialog: { shown: false } })),
+  showDialog: ({ type }) => set(() => ({ shownDialog: { shown: true, type } })),
 }));
