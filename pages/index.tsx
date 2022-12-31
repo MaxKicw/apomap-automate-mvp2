@@ -10,7 +10,7 @@ export default function Home() {
   const { t } = useTranslation();
 
   return (
-    <div className="flex w-full h-full items-center justify-center">
+    <div className="flex h-full w-full flex-col items-center justify-center bg-primary-500">
       <Text>{store.number}</Text>
       <Button onClick={() => store.increase(1)}>
         {t("common.terms.increment")}
