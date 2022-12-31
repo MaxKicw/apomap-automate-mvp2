@@ -10,4 +10,7 @@ export const useStore = create<Store>()((set) => ({
   shownDialog: { shown: false },
   closeDialog: () => set(() => ({ shownDialog: { shown: false } })),
   showDialog: ({ type }) => set(() => ({ shownDialog: { shown: true, type } })),
+  // User-Management
+  user: null,
+  setUser: (user) => set(() => ({ user: user })),
 }));

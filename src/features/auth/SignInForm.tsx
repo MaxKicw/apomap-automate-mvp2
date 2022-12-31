@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useStore } from "../../hooks/useStore";
 import { useRouter } from "next/router";
+import { useAuth } from "../../hooks/useAuth";
 
 export interface SignInFormProps {
   close?: boolean;
@@ -16,6 +17,7 @@ export const SignInForm: FunctionComponent<SignInFormProps> = ({
   const store = useStore();
   const { t } = useTranslation();
   const router = useRouter();
+  const { signIn } = useAuth({ router, store });
   const [loading, setLoading] = useState(false);
   const form = useForm({
     initialValues: {
@@ -32,7 +34,10 @@ export const SignInForm: FunctionComponent<SignInFormProps> = ({
     if (!form.validate().hasErrors) {
       try {
         setLoading(true);
-        router.replace("/dashboard");
+        await signIn({
+          email: form.values.email,
+          password: form.values.password,
+        });
       } catch (error) {
         console.log(error);
       } finally {

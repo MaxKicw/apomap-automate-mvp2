@@ -1,4 +1,4 @@
-import type { NextApiRequest } from "next";
+import type { GetServerSidePropsContext, NextApiRequest } from "next";
 import { type NextPage } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -17,6 +17,7 @@ import system from "../public/img/abfrage.png";
 import { useRouter } from "next/router";
 import { useStore } from "../src/hooks/useStore";
 import { CommandMenu } from "../src/features/cmdk/CommandMenu";
+import { withAuth } from "../src/hocs/withAuth";
 
 const FeatureCard: FunctionComponent<{
   title: string;
@@ -95,7 +96,7 @@ export interface SignInBoxProps {
   auth?: any;
 }
 
-const Home: NextPage = () => {
+const Home: NextPage = (props) => {
   const { t } = useTranslation("common");
   const store = useStore();
 
@@ -113,7 +114,6 @@ const Home: NextPage = () => {
             {t("index.title")}
           </Title>
           <Text className=" text-blue-gray-500">{t("index.title")}</Text>
-          <Text className=" text-blue-gray-500">{store.number}</Text>
         </motion.div>
         <motion.div
           initial={{ opacity: 0 }}
@@ -155,20 +155,18 @@ const Home: NextPage = () => {
 
 export default Home;
 
-export const getServerSideProps = async ({
-  locale,
-}: {
-  locale: string;
-  req: NextApiRequest;
-}) => {
-  const res = await serverSideTranslations(locale, ["common"], nextI18nConfig, [
-    "en",
-    "de",
-  ]);
-
-  return {
-    props: {
-      ...res,
-    },
-  };
-};
+export const getServerSideProps = withAuth(
+  async (context: GetServerSidePropsContext) => {
+    const res = await serverSideTranslations(
+      context.locale ?? "de",
+      ["common"],
+      nextI18nConfig,
+      ["en", "de"]
+    );
+    return {
+      props: {
+        ...res,
+      },
+    };
+  }
+);

@@ -18,7 +18,7 @@ export const SignUpForm: FunctionComponent<SignUpFormProps> = ({
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { signUp } = useAuth();
+  const { signUp } = useAuth({});
   const form = useForm({
     initialValues: {
       email: "",
