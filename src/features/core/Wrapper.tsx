@@ -8,7 +8,7 @@ type WrapperProps = {
 
 const Wrapper: FunctionComponent<WrapperProps> = ({ children }) => {
   const store = useStore();
-  const { setAuthListener, refreshToken } = useAuth(store);
+  const { setAuthListener, refreshToken } = useAuth({store});
 
   useEffect(() => {
     setAuthListener();
