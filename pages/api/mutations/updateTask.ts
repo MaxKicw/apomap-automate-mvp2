@@ -4,6 +4,7 @@ import * as admin from "firebase-admin";
 import { late, z } from "zod";
 import hasAuth from "../utils/hasAuth";
 import { Task } from "../../../src/types/Task";
+import dayjs from "dayjs";
 
 const schema = z.object({
   id: z.string(),
@@ -31,6 +32,7 @@ export default async function handler(
         .update({
           ...(input.customerName && { customerName: input.customerName }),
           ...(input.coords && { coords: input.coords }),
+          updatedAt: dayjs().toISOString(),
         });
       res.status(200).json({ msg: "task successfully updated" });
     } else {

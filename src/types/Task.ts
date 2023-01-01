@@ -3,4 +3,6 @@ export interface Task {
   customerName: string;
   owner: string;
   coords: { lat: number; lon: number };
+  createdAt: string;
+  updatedAt?: string;
 }

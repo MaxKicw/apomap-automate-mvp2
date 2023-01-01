@@ -4,6 +4,7 @@ import * as admin from "firebase-admin";
 import { z } from "zod";
 import hasAuth from "../utils/hasAuth";
 import { randomUUID } from "crypto";
+import dayjs from "dayjs";
 
 const schema = z.object({
   customerName: z.string(),
@@ -31,6 +32,7 @@ export default async function handler(
         id,
         owner: token.uid,
         coords: { lat: input.lat, lon: input.lon },
+        createdAt: dayjs().toISOString(),
       });
     //Send response
     res.status(200).json({ msg: doc });

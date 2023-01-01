@@ -7,6 +7,7 @@ import { useMutation } from "react-query";
 import deleteTask from "../../mutations/deleteTask";
 import { IconSettings } from "@tabler/icons";
 import { useStore } from "../../hooks/useStore";
+import dayjs from "dayjs";
 
 export interface TaskComponentProps {
   task: Task;
@@ -28,7 +29,19 @@ const TaskComponent: FunctionComponent<TaskComponentProps> = ({
       transition={{ duration: 0.5, delay: 0.4 * (index + 0.5) }}
       className="w-full my-2 rounded-md  p-4 flex flex-ro bg-white shadow-sm items-center justify-between"
     >
-      <Text>{task.customerName}</Text>
+      <div>
+        <Text className="font-bold">{task.customerName}</Text>
+        <div className="flex flex-row items-center">
+          <Text c="dimmend" fz="xs">
+            {dayjs(task.createdAt).format("DD.MM.YY / HH:mm")}
+          </Text>
+          {task.updatedAt && (
+            <Text fz="xs" className=" text-primary-500 ml-2">
+              {`(${dayjs(task.updatedAt).format("DD.MMM")})`}
+            </Text>
+          )}
+        </div>
+      </div>
       <div className="flex flex-row items-center">
         <ActionIcon
           onClick={() => store.showDialog({ type: "taskModal", task })}

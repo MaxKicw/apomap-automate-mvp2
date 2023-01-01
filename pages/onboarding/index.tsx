@@ -63,7 +63,7 @@ const Onboarding: FunctionComponent = () => {
           <Button
             loading={isLoading}
             onClick={submit}
-            className="mt-2"
+            className="ml-2 mt-2"
             radius="xl"
           >
             {t("common.terms.confirm")}

@@ -3,7 +3,9 @@
     "terms": {
       "signIn": "Einloggen",
       "signUp": "Anmelden",
-      "back": "Zurück"
+      "back": "Zurück",
+      "confirm": "Bestätigen",
+      "save": "Speichern"
     }
   },
   "index": {
@@ -54,16 +56,46 @@
     "passwordRepeat": {
       "placeholder": "Bitte wiederholen",
       "label": "Passwort (wiederholen)"
-    }
+    },
+    "confirm": "Anmelden"
   },
   "codeConfirmation": {
     "title": "Wir haben dir auf deine E-Mail {{email}} ein Code gesendet. Bitte gebe diesen im unteren Feld ein und bestätige."
   },
   "onboarding": {
-    "title": "Andecken"
+    "title": "Andecken",
+    "businessName": {
+      "label": "Apothekenname",
+      "placeholder": "Apotheke zum Beispiel"
+    }
   },
   "dashboard": {
     "title": "Willkommen, {{businessName}}!",
     "createTask": "Auftrag erstellen"
+  },
+  "signInModal": {
+    "email": {
+      "label": "E-Mail Adresse",
+      "placeholder": "info@apotheke.de"
+    },
+    "password": {
+      "label": "Passwort",
+      "placeholder": "******"
+    }
+  },
+  "taskModal": {
+    "title": "Auftrag",
+    "customerName": {
+      "label": "Name des Kunden",
+      "placeholder": "Max Mustermann"
+    },
+    "lon": {
+      "label": "Longitude",
+      "placeholder": "11.111"
+    },
+    "lat": {
+      "label": "Latitude",
+      "placeholder": "45.111"
+    }
   }
 }

@@ -3,7 +3,9 @@
     "terms": {
       "signIn": "Sign in",
       "signUp": "Sign up",
-      "back": "Back"
+      "back": "Back",
+      "confirm": "Confirm",
+      "save": "Save"
     }
   },
   "index": {
@@ -54,16 +56,46 @@
     "passwordRepeat": {
       "placeholder": "Please repeat",
       "label": "Password (repeat)"
-    }
+    },
+    "confirm": "Sign up"
   },
   "codeConfirmation": {
     "title": "We have sent a code to your email {{email}}. Please enter it in the field below and confirm."
   },
   "onboarding": {
-    "title": "Onboarding"
+    "title": "Onboarding",
+    "businessName": {
+      "label": "Pharmacy name",
+      "placeholder": "Pharmacy for example"
+    }
   },
   "dashboard": {
     "title": "Welcome, {{businessName}}!",
     "createTask": "Create task"
+  },
+  "signInModal": {
+    "email": {
+      "label": "Email address",
+      "placeholder": "info@pharmacy.de"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "******"
+    }
+  },
+  "taskModal": {
+    "title": "Task",
+    "customerName": {
+      "label": "Customer name",
+      "placeholder": "Max Mustermann"
+    },
+    "lon": {
+      "label": "Longitude",
+      "placeholder": "11.111"
+    },
+    "lat": {
+      "label": "Latitude",
+      "placeholder": "45.111"
+    }
   }
 }

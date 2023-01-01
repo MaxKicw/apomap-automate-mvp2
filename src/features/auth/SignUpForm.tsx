@@ -41,7 +41,7 @@ export const SignUpForm: FunctionComponent<SignUpFormProps> = ({
           password: form.values.password,
         });
         console.log(user);
-        router.replace(`/auth/confirm`);
+        router.replace(`/onboarding`);
       } catch (error) {
         alert("Error");
       } finally {
