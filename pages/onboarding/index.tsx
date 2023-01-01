@@ -10,17 +10,38 @@ import { useRouter } from "next/router.js";
 import { AuthLayout } from "../../src/features/auth/AuthLayout";
 import { withAuth } from "../../src/hocs/withAuth";
 import { useAuth } from "../../src/hooks/useAuth";
+import { useMutation } from "react-query";
+import createAccount from "../../src/mutations/createAccount";
 
 const Onboarding: FunctionComponent = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { deleteUser } = useAuth({ router });
+  const { isLoading, mutate } = useMutation(createAccount);
 
   const form = useForm({
     initialValues: {
       businessName: "",
     },
+    validate: {
+      businessName: (value) =>
+        value !== "" ? null : t("common.errors.required"),
+    },
   });
+
+  const submit = () => {
+    if (form.isValid()) {
+      mutate(
+        { businessName: form.values.businessName },
+        {
+          onSuccess: () => router.replace("/dashboard"),
+          onError: (err) => console.error("error", err),
+        }
+      );
+    } else {
+      console.log(form.errors);
+    }
+  };
 
   return (
     <AuthLayout>
@@ -39,7 +60,12 @@ const Onboarding: FunctionComponent = () => {
           >
             {t("common.terms.back")}
           </Button>
-          <Button className="mt-2" radius="xl">
+          <Button
+            loading={isLoading}
+            onClick={submit}
+            className="mt-2"
+            radius="xl"
+          >
             {t("common.terms.confirm")}
           </Button>
         </div>

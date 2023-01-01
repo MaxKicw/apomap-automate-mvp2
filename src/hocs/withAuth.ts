@@ -1,8 +1,7 @@
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import nookies from "nookies";
 import { firebaseAdmin } from "../../firebaseServer";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../firebaseClient";
+import { firestore } from "firebase-admin";
 
 export function withAuth(gssp: GetServerSideProps) {
   return async (context: GetServerSidePropsContext) => {
@@ -13,12 +12,8 @@ export function withAuth(gssp: GetServerSideProps) {
       const { uid } = token;
       userUid = uid;
       if (uid) {
-        const docRef = doc(db, "accounts", uid);
-        const docSnap = await getDoc(docRef);
-        if (
-          !docSnap.exists() &&
-          context.resolvedUrl.split("/")[1] !== "onboarding"
-        ) {
+        const doc = await firestore().collection("accounts").doc(uid).get();
+        if (!doc.exists && context.resolvedUrl.split("/")[1] !== "onboarding") {
           return {
             redirect: {
               destination: `/${context.locale}/onboarding`,

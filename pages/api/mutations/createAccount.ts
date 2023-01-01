@@ -3,12 +3,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import * as admin from "firebase-admin";
 import { z } from "zod";
 import hasAuth from "../utils/hasAuth";
-import { randomUUID } from "crypto";
 
 const schema = z.object({
-  customerName: z.string(),
-  lat: z.number(),
-  lon: z.number(),
+  businessName: z.string(),
 });
 
 export default async function handler(
@@ -20,17 +17,13 @@ export default async function handler(
     const input = schema.parse(req.body);
     //Check auth
     const token = await hasAuth(req);
-    //Make mutation
-    const id = randomUUID();
     const doc = await admin
       .firestore()
-      .collection("tasks")
-      .doc(id)
+      .collection("accounts")
+      .doc(token.uid)
       .set({
-        customerName: input.customerName,
-        id,
-        owner: token.uid,
-        coords: { lat: input.lat, lon: input.lon },
+        id: token.uid,
+        businessName: input.businessName,
       });
     //Send response
     res.status(200).json({ msg: doc });

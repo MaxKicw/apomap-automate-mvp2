@@ -5,6 +5,7 @@ import { Button, Modal, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useMutation } from "react-query";
 import createTask from "../../../mutations/createTask";
+import updateTask from "../../../mutations/updateTask";
 
 export interface TaskModalProps {
   // TODO:
@@ -14,19 +15,20 @@ export const TaskModal: FunctionComponent<TaskModalProps> = ({}) => {
   const store = useStore();
   const { t } = useTranslation();
   const { isLoading, mutate } = useMutation(createTask);
+  const { isLoading: isUpdating, mutate: update } = useMutation(updateTask);
 
   const form = useForm({
     initialValues: {
-      customerName: "",
-      lon: "",
-      lat: "",
+      customerName: store.shownDialog.task?.customerName ?? "",
+      lon: store.shownDialog.task?.coords.lon.toString() ?? "",
+      lat: store.shownDialog.task?.coords.lat.toString() ?? "",
     },
   });
 
   const submit = async () => {
     mutate(
       {
-        name: form.values.customerName,
+        customerName: form.values.customerName,
         lat: parseFloat(form.values.lat),
         lon: parseFloat(form.values.lon),
       },
@@ -39,6 +41,28 @@ export const TaskModal: FunctionComponent<TaskModalProps> = ({}) => {
         },
       }
     );
+  };
+
+  const save = async () => {
+    store.shownDialog.task &&
+      update(
+        {
+          id: store.shownDialog.task.id,
+          customerName: form.values.customerName,
+          coords: {
+            lat: parseFloat(form.values.lat),
+            lon: parseFloat(form.values.lon),
+          },
+        },
+        {
+          onSuccess: () => {
+            store.closeDialog();
+          },
+          onError: (err) => {
+            console.error("error", err);
+          },
+        }
+      );
   };
 
   return (
@@ -67,9 +91,20 @@ export const TaskModal: FunctionComponent<TaskModalProps> = ({}) => {
         />
       </div>
       <div className="mt-4 flex flex-row items-center justify-end">
-        <Button loading={isLoading} onClick={submit} radius="xl">
-          {t("common.terms.confirm")}
-        </Button>
+        {store.shownDialog.task ? (
+          <Button
+            disabled={!form.isTouched()}
+            loading={isUpdating}
+            onClick={save}
+            radius="xl"
+          >
+            {t("common.terms.save")}
+          </Button>
+        ) : (
+          <Button loading={isLoading} onClick={submit} radius="xl">
+            {t("common.terms.confirm")}
+          </Button>
+        )}
       </div>
     </Modal>
   );

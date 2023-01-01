@@ -9,7 +9,8 @@ export const useStore = create<Store>()((set) => ({
   //Dialog-Management
   shownDialog: { shown: false },
   closeDialog: () => set(() => ({ shownDialog: { shown: false } })),
-  showDialog: ({ type }) => set(() => ({ shownDialog: { shown: true, type } })),
+  showDialog: ({ type, task }) =>
+    set(() => ({ shownDialog: { shown: true, type, task } })),
   // User-Management
   user: null,
   setUser: (user) => set(() => ({ user: user })),
