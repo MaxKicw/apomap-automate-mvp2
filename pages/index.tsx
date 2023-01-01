@@ -127,7 +127,7 @@ const Home: NextPage = (props) => {
         </motion.div>
       </div>
       <div className="flex w-full flex-col items-center p-10 ">
-        <Title className=" font-bold text-blue-gray-500">
+        <Title className=" font-bold mt-2 text-blue-gray-500">
           {t("index.featureSection.title")}
         </Title>
         <div className="grid w-full grid-cols-1 gap-10 py-10 lg:grid-cols-3">

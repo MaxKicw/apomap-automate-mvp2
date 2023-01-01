@@ -9,30 +9,33 @@ import { useStore } from "../src/hooks/useStore";
 import { useAuth } from "../src/hooks/useAuth";
 import { withAuth } from "../src/hocs/withAuth";
 import { GetServerSidePropsContext } from "next";
+import { auth } from "../firebaseClient";
 
 const Dashboard: FunctionComponent = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const store = useStore();
   const { signOut } = useAuth({ router });
+  const user = auth.currentUser;
 
-  // TODO:
-  if (false) {
-    return (
-      <div className="flex h-full w-full flex-col items-center justify-center  bg-primary-500 bg-opacity-20">
-        <Loader />
-      </div>
-    );
-  }
+  const request = () => {
+    fetch("http://localhost:3000/api/createTask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: "Markus",
+      }),
+      redirect: "follow",
+    })
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  };
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center  bg-primary-500 bg-opacity-20">
-      <Title>{t("dashboard.title", { businessName: "PLACEHOLDEr" })}</Title>
-      <Button
-        className="mt-2"
-        radius="xl"
-        onClick={() => store.showDialog({ type: "taskModal" })}
-      >
+      <Title>{t("dashboard.title", { businessName: user?.uid })}</Title>
+      <Button className="mt-2" radius="xl" onClick={() => request()}>
         {t("dashboard.createTask")}
       </Button>
       <Button
