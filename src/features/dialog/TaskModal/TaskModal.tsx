@@ -3,6 +3,8 @@ import { useTranslation } from "next-i18next";
 import { useStore } from "../../../hooks/useStore";
 import { Button, Modal, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useMutation } from "react-query";
+import createTask from "../../../mutations/createTask";
 
 export interface TaskModalProps {
   // TODO:
@@ -11,6 +13,7 @@ export interface TaskModalProps {
 export const TaskModal: FunctionComponent<TaskModalProps> = ({}) => {
   const store = useStore();
   const { t } = useTranslation();
+  const { isLoading, mutate } = useMutation(createTask);
 
   const form = useForm({
     initialValues: {
@@ -21,8 +24,21 @@ export const TaskModal: FunctionComponent<TaskModalProps> = ({}) => {
   });
 
   const submit = async () => {
-    // TODO:
-    store.closeDialog();
+    mutate(
+      {
+        name: form.values.customerName,
+        lat: parseFloat(form.values.lat),
+        lon: parseFloat(form.values.lon),
+      },
+      {
+        onSuccess: () => {
+          store.closeDialog();
+        },
+        onError: (err) => {
+          console.error("error", err);
+        },
+      }
+    );
   };
 
   return (
@@ -51,8 +67,7 @@ export const TaskModal: FunctionComponent<TaskModalProps> = ({}) => {
         />
       </div>
       <div className="mt-4 flex flex-row items-center justify-end">
-        {/* TODO: */}
-        <Button loading={false} onClick={submit} radius="xl">
+        <Button loading={isLoading} onClick={submit} radius="xl">
           {t("common.terms.confirm")}
         </Button>
       </div>

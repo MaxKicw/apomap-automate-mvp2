@@ -1,6 +1,6 @@
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import nextI18nConfig from "../next-i18next.config";
-import type { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { Button, Loader, Title } from "@mantine/core";
 
 import { useRouter } from "next/router";
@@ -9,33 +9,43 @@ import { useStore } from "../src/hooks/useStore";
 import { useAuth } from "../src/hooks/useAuth";
 import { withAuth } from "../src/hocs/withAuth";
 import { GetServerSidePropsContext } from "next";
-import { auth } from "../firebaseClient";
+import { auth, db } from "../firebaseClient";
+import { useMutation } from "react-query";
+import createTask from "../src/mutations/createTask";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { collection, query, where } from "firebase/firestore";
+import { Task } from "../src/types/Task";
 
 const Dashboard: FunctionComponent = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const store = useStore();
+  const [tasks, setTasks] = useState<Task[]>();
   const { signOut } = useAuth({ router });
-  const user = auth.currentUser;
 
-  const request = () => {
-    fetch("http://localhost:3000/api/createTask", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: "Markus",
-      }),
-      redirect: "follow",
-    })
-      .then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
-  };
+  const [snapshot, loading, error] = useCollection(
+    query(collection(db, "tasks"))
+  );
+
+  useEffect(() => {
+    snapshot && setTasks(snapshot?.docs.map((doc) => doc.data() as Task));
+  }, [snapshot]);
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center  bg-primary-500 bg-opacity-20">
-      <Title>{t("dashboard.title", { businessName: user?.uid })}</Title>
-      <Button className="mt-2" radius="xl" onClick={() => request()}>
+      <Title order={5} className="absolute  top-4 left-4">
+        {t("dashboard.title", { businessName: auth.currentUser?.uid })}
+      </Title>
+      {loading ? (
+        <Loader />
+      ) : (
+        tasks?.map((task) => <p key={task.id}>{task.customerName}</p>)
+      )}
+      <Button
+        className="mt-2"
+        radius="xl"
+        onClick={() => store.showDialog({ type: "taskModal" })}
+      >
         {t("dashboard.createTask")}
       </Button>
       <Button
