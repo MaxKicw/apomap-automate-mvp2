@@ -3,13 +3,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import * as admin from "firebase-admin";
 import { z } from "zod";
 import hasAuth from "../utils/hasAuth";
-import { randomUUID } from "crypto";
-import dayjs from "dayjs";
+import { Task } from "../../../src/types/Task";
 
 const schema = z.object({
-  customerName: z.string(),
-  lat: z.number(),
-  lon: z.number(),
+  id: z.string(),
 });
 
 export default async function handler(
@@ -22,21 +19,14 @@ export default async function handler(
     //Check auth
     const token = await hasAuth(req);
     //Make mutation
-    const id = randomUUID();
-    const doc = await admin
-      .firestore()
-      .collection("tasks")
-      .doc(id)
-      .set({
-        customerName: input.customerName,
-        id,
-        owner: token.uid,
-        status: "unassigned",
-        coords: { lat: input.lat, lon: input.lon },
-        createdAt: dayjs().toISOString(),
-      });
-    //Send response
-    res.status(200).json(id);
+    const doc = await admin.firestore().collection("tasks").doc(input.id).get();
+    const data = doc.data() as Task;
+    if (data.owner === token.uid) {
+      await admin.firestore().collection("tasks").doc(input.id).delete();
+      res.status(200).json({ msg: "task successfully deleted" });
+    } else {
+      res.status(400).json({ msg: "item not found" });
+    }
   } catch (error) {
     res.status(400).json({ msg: "mutation was not successfull" });
   }
