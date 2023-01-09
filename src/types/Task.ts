@@ -5,4 +5,5 @@ export interface Task {
   coords: { lat: number; lon: number };
   createdAt: string;
   updatedAt?: string;
+  status: string;
 }

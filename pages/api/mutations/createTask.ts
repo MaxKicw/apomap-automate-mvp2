@@ -23,7 +23,7 @@ export default async function handler(
     const token = await hasAuth(req);
     //Make mutation
     const id = randomUUID();
-    const doc = await admin
+    await admin
       .firestore()
       .collection("tasks")
       .doc(id)
@@ -31,11 +31,12 @@ export default async function handler(
         customerName: input.customerName,
         id,
         owner: token.uid,
+        status: "unassigned",
         coords: { lat: input.lat, lon: input.lon },
         createdAt: dayjs().toISOString(),
       });
     //Send response
-    res.status(200).json({ msg: doc });
+    res.status(200).json(id);
   } catch (error) {
     res.status(400).json({ msg: "mutation was not successfull" });
   }

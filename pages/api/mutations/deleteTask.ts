@@ -5,6 +5,16 @@ import { z } from "zod";
 import hasAuth from "../utils/hasAuth";
 import { Task } from "../../../src/types/Task";
 
+const deleteRelatedSchedules = (scheduleId: string) =>
+  admin.firestore().collection("schedules").doc(scheduleId).delete();
+
+// const deleteRelatedSchedules = (scheduleIds: string[]) =>
+//   Promise.all(
+//     scheduleIds.map((id) =>
+//       admin.firestore().collection("schedules").doc(id).delete()
+//     )
+//   );
+
 const schema = z.object({
   id: z.string(),
 });
@@ -21,13 +31,20 @@ export default async function handler(
     //Make mutation
     const doc = await admin.firestore().collection("tasks").doc(input.id).get();
     const data = doc.data() as Task;
-    if (data.owner === token.uid) {
-      await admin.firestore().collection("tasks").doc(input.id).delete();
-      res.status(200).json({ msg: "task successfully deleted" });
-    } else {
-      res.status(400).json({ msg: "item not found" });
+    //Getting related schedule
+    const schedule = await admin
+      .firestore()
+      .collection("schedules")
+      .doc(input.id)
+      .get()
+
+    if (data.owner !== token.uid) {
+      throw new Error();
     }
+    await admin.firestore().collection("tasks").doc(input.id).delete();
+    schedule.exists && (await deleteRelatedSchedules(input.id));
+    res.status(200).json({ msg: "task successfully deleted" });
   } catch (error) {
-    res.status(400).json({ msg: "mutation was not successfull" });
+    res.status(400).json({ msg: "item not found" });
   }
 }

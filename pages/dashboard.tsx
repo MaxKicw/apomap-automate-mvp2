@@ -1,21 +1,22 @@
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import nextI18nConfig from "../next-i18next.config";
-import { useEffect, useState } from "react";
-import { Button, Loader, Skeleton, Title } from "@mantine/core";
-import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
-import { useStore } from "../src/hooks/useStore";
-import { useAuth } from "../src/hooks/useAuth";
-import { withAuth } from "../src/hocs/withAuth";
+import { Button, Skeleton, Title } from "@mantine/core";
 import { GetServerSidePropsContext, NextPage } from "next";
-import { db } from "../firebaseClient";
-import { useCollection } from "react-firebase-hooks/firestore";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import nookies from "nookies";
+import { useEffect, useState } from "react";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { db } from "../firebaseClient";
+import nextI18nConfig from "../next-i18next.config";
+import { withAuth } from "../src/hocs/withAuth";
+import { useAuth } from "../src/hooks/useAuth";
+import { useStore } from "../src/hooks/useStore";
 
-import { collection, orderBy, query, where } from "firebase/firestore";
-import { Task } from "../src/types/Task";
-import TaskComponent from "../src/features/core/TaskComponent";
+import { collection, query, where } from "firebase/firestore";
 import { firebaseAdmin } from "../firebaseServer";
+import TaskComponent from "../src/features/core/TaskComponent";
+import { Task } from "../src/types/Task";
 
 const Dashboard: NextPage<{ uid: string }> = ({ uid }) => {
   const router = useRouter();
@@ -66,6 +67,16 @@ const Dashboard: NextPage<{ uid: string }> = ({ uid }) => {
       >
         LogOut
       </Button>
+      <Link href="/testPage">
+        <Button
+          // onClick={() => router.push("../pages/testPage.tsx")}
+          variant="subtle"
+          className="mt-2"
+          radius="xl"
+        >
+          Test Page
+        </Button>
+      </Link>
     </div>
   );
 };
