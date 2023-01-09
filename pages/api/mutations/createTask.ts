@@ -23,7 +23,7 @@ export default async function handler(
     const token = await hasAuth(req);
     //Make mutation
     const id = randomUUID();
-    const doc = await admin
+    await admin
       .firestore()
       .collection("tasks")
       .doc(id)

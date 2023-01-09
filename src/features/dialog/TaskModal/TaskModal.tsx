@@ -2,6 +2,8 @@ import { Accordion, Box, Button, Modal, TextInput } from "@mantine/core";
 import { TimeInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconCalendarTime, IconClock, IconStatusChange } from "@tabler/icons";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { useTranslation } from "next-i18next";
 import type { FunctionComponent } from "react";
 import { useMutation } from "react-query";
@@ -9,6 +11,8 @@ import { scheduleTask } from "../../../actions/actions";
 import { useStore } from "../../../hooks/useStore";
 import createTask from "../../../mutations/createTask";
 import updateTask from "../../../mutations/updateTask";
+
+dayjs.extend(utc);
 
 export interface TaskModalProps {
   // TODO:
@@ -32,50 +36,34 @@ export const TaskModal: FunctionComponent<TaskModalProps> = ({}) => {
   });
 
   const submit = async () => {
-    let newStatus: string;
-
-    if (form.values.scheduleStatus !== " ") {
-      newStatus = form.values.scheduleStatus;
-
-      create(
-        {
-          customerName: form.values.customerName,
-          lat: parseFloat(form.values.lat),
-          lon: parseFloat(form.values.lon),
+    create(
+      {
+        customerName: form.values.customerName,
+        lat: parseFloat(form.values.lat),
+        lon: parseFloat(form.values.lon),
+      },
+      {
+        onSuccess: (data) => {
+          form.values.scheduleStatus !== " "
+            ? handleSchedule(
+                data,
+                form.values.scheduleStatus,
+                dayjs(form.values.autoTimeScheduled).toISOString()
+              )
+            : store.closeDialog();
         },
-        {
-          onSuccess: (data) => {
-            handleSchedule(data);
-          },
-          onError: (err) => {
-            console.error("Error while creating task", err);
-          },
-        }
-      );
-    } else {
-      create(
-        {
-          customerName: form.values.customerName,
-          lat: parseFloat(form.values.lat),
-          lon: parseFloat(form.values.lon),
+        onError: (err) => {
+          console.error("Error while creating task", err);
         },
-        {
-          onSuccess: () => {
-            // Note: onSucess has data, variables and context properties
-            store.closeDialog();
-          },
-          onError: (err) => {
-            console.error("error", err);
-          },
-        }
-      );
-    }
-    const handleSchedule = (ID: string) => {
+      }
+    );
+
+    const handleSchedule = (id: string, status: string, time: string) => {
       schedule(
         {
-          id: ID,
-          status: newStatus,
-          time: form.values.autoTimeScheduled,
+          id,
+          status,
+          time,
         },
         {
           onSuccess: () => {

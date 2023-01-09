@@ -1,4 +1,4 @@
-import { ActionIcon, CloseButton, Text, Tooltip } from "@mantine/core";
+import { ActionIcon, Badge, CloseButton, Text, Tooltip } from "@mantine/core";
 import { FunctionComponent } from "react";
 import { useTranslation } from "next-i18next";
 import { Task } from "../../types/Task";
@@ -42,20 +42,23 @@ const TaskComponent: FunctionComponent<TaskComponentProps> = ({
           )}
         </div>
       </div>
-      <div className="flex flex-row items-center">
-        <ActionIcon
-          onClick={() => store.showDialog({ type: "taskModal", task })}
-          className="mr-2"
-          variant="default"
-        >
-          <IconSettings size={16} />{" "}
-        </ActionIcon>
-        <Tooltip label={t("common.terms.delete")}>
-          <CloseButton
-            loading={isLoading}
-            onClick={() => mutate({ id: task.id })}
-          />
-        </Tooltip>
+      <div className="flex flex-col items-end">
+        <Badge className="mb-2">{task.status}</Badge>
+        <div className="flex flow-col">
+          <ActionIcon
+            onClick={() => store.showDialog({ type: "taskModal", task })}
+            className="mr-2"
+            variant="default"
+          >
+            <IconSettings size={16} />{" "}
+          </ActionIcon>
+          <Tooltip label={t("common.terms.delete")}>
+            <CloseButton
+              loading={isLoading}
+              onClick={() => mutate({ id: task.id })}
+            />
+          </Tooltip>
+        </div>
       </div>
     </motion.div>
   );
