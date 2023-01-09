@@ -24,7 +24,8 @@ export default async function handler(
     const doc = await admin
       .firestore()
       .collection("schedules")
-      .add({
+      .doc(input.id)
+      .set({
         taskId: input.id,
         status: input.status,
         time: input.time

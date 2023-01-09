@@ -3,6 +3,7 @@ import { GetServerSidePropsContext, NextPage } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import nookies from "nookies";
 import { useEffect, useState } from "react";
 import { useCollection } from "react-firebase-hooks/firestore";
@@ -66,6 +67,16 @@ const Dashboard: NextPage<{ uid: string }> = ({ uid }) => {
       >
         LogOut
       </Button>
+      <Link href="/testPage">
+        <Button
+          // onClick={() => router.push("../pages/testPage.tsx")}
+          variant="subtle"
+          className="mt-2"
+          radius="xl"
+        >
+          Test Page
+        </Button>
+      </Link>
     </div>
   );
 };
