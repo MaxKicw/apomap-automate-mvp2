@@ -11,7 +11,8 @@ import { scheduleTask } from "../../../actions/actions";
 import { useStore } from "../../../hooks/useStore";
 import createTask from "../../../mutations/createTask";
 import updateTask from "../../../mutations/updateTask";
-
+import { Segment } from "../../../analytics.ts/segmentAnalyticsLogger";
+import { errorLogger } from "../../../../ErrorLogger/errorLogger";
 dayjs.extend(utc);
 
 export interface TaskModalProps {
@@ -50,10 +51,18 @@ export const TaskModal: FunctionComponent<TaskModalProps> = ({}) => {
                 form.values.scheduleStatus,
                 dayjs(form.values.autoTimeScheduled).toISOString()
               )
-            : store.closeDialog();
+            : Segment.track({
+                anonymousId: "create-task-modal",
+                type: "Track",
+                event: "Create New Task",
+                properties: {
+                  origin: "Task Modal",
+                },
+              });
+          store.closeDialog();
         },
         onError: (err) => {
-          console.error("Error while creating task", err);
+          errorLogger("Error while creating task", err);
         },
       }
     );
@@ -67,10 +76,18 @@ export const TaskModal: FunctionComponent<TaskModalProps> = ({}) => {
         },
         {
           onSuccess: () => {
+            Segment.track({
+              anonymousId: "create-task-schedule",
+              type: "Track",
+              event: "Create New Schedule",
+              properties: {
+                origin: "Task Modal",
+              },
+            });
             store.closeDialog();
           },
           onError: (err) => {
-            console.error("Error while scheduling task", err);
+            errorLogger("Error while scheduling task", err);
           },
         }
       );
@@ -90,10 +107,18 @@ export const TaskModal: FunctionComponent<TaskModalProps> = ({}) => {
         },
         {
           onSuccess: () => {
+            Segment.track({
+              anonymousId: "update-task-info",
+              type: "Track",
+              event: "Update Task",
+              properties: {
+                origin: "Task Modal",
+              },
+            });
             store.closeDialog();
           },
           onError: (err) => {
-            console.error("error", err);
+            errorLogger("Error while updating task", err);
           },
         }
       );

@@ -9,6 +9,8 @@ import {
 
 import { Store } from "../types/Store";
 import { NextRouter } from "next/router";
+import { Segment } from "../analytics.ts/segmentAnalyticsLogger";
+import { errorLogger } from "../../ErrorLogger/errorLogger";
 
 export const useAuth = ({
   store,
@@ -41,9 +43,13 @@ export const useAuth = ({
     createUserWithEmailAndPassword(auth, input.email, input.password)
       .then((creds) => {
         const user = creds.user;
+        Segment.identify(user.email, {
+          "email": user.email,
+        });
         return user;
       })
-      .catch((err) => console.error("error", err));
+      .catch((err) => errorLogger("Error signing in", err));
+      // .catch((err) => console.error("error", err));
   //SignIn
   const signIn = (input: { email: string; password: string }) => {
     signInWithEmailAndPassword(auth, input.email, input.password)
@@ -68,7 +74,7 @@ export const useAuth = ({
     console.log(auth.currentUser);
     if (auth.currentUser)
       firebaseDeleteUser(auth.currentUser)
-        .then(() => router?.replace(successRoute))
+        .then(() => {router?.replace(successRoute)})
         .catch((err) => console.error("error", err));
   };
   return { signUp, signIn, signOut, deleteUser, setAuthListener, refreshToken };

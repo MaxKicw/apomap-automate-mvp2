@@ -6,6 +6,7 @@ import { useTranslation } from "next-i18next";
 import { useStore } from "../../hooks/useStore";
 import { useRouter } from "next/router";
 import { useAuth } from "../../hooks/useAuth";
+import { Segment } from "../../analytics.ts/segmentAnalyticsLogger";
 
 export interface SignUpFormProps {
   close?: boolean;
@@ -72,7 +73,14 @@ export const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       <div className="mt-2 flex w-full items-center justify-between py-2">
         {close ? (
           <Button
-            onClick={() => store.closeDialog()}
+            onClick={() => {
+              store.closeDialog();
+              Segment.track({
+                type: "Track",
+                anonymousId: "yyy",
+                event: "SIGN-IN Cancelled: Close button clicked ",
+              });
+            }}
             radius="xl"
             variant="outline"
           >
@@ -85,7 +93,16 @@ export const SignUpForm: FunctionComponent<SignUpFormProps> = ({
           leftIcon={
             loading ? <Loader variant="dots" color="white" scale="s" /> : null
           }
-          onClick={submit}
+          onClick={() => {
+            submit;
+            Segment.identify({
+              type: "identify",
+              traits: {
+                email: form.values.email,
+              },
+              userId: "signup-123",
+            });
+          }}
           radius="xl"
         >
           {t("signUpModal.confirm")}

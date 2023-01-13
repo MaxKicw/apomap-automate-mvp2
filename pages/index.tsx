@@ -1,23 +1,23 @@
-import type { GetServerSidePropsContext, NextApiRequest } from "next";
+import type { GetServerSidePropsContext } from "next";
 import { type NextPage } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import nextI18nConfig from "../next-i18next.config";
+import { Button, Card, Space, Text, Title } from "@mantine/core";
 import { motion } from "framer-motion";
 import type { StaticImageData } from "next/image.js";
 import Image from "next/image.js";
-import { Button, Card, Space, Text, Title } from "@mantine/core";
 import type { FunctionComponent } from "react";
+import nextI18nConfig from "../next-i18next.config";
 
+import { useRouter } from "next/router";
+import system from "../public/img/abfrage.png";
+import pos from "../public/img/kasse.png";
 import logo from "../public/img/logo.png";
 import car from "../public/img/xiao_car.png";
-import pos from "../public/img/kasse.png";
-import system from "../public/img/abfrage.png";
-import { useRouter } from "next/router";
-import { useStore } from "../src/hooks/useStore";
 import { CommandMenu } from "../src/features/cmdk/CommandMenu";
 import { withAuth } from "../src/hocs/withAuth";
+import { useStore } from "../src/hooks/useStore";
 
 const FeatureCard: FunctionComponent<{
   title: string;

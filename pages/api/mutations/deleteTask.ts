@@ -4,22 +4,17 @@ import * as admin from "firebase-admin";
 import { z } from "zod";
 import hasAuth from "../utils/hasAuth";
 import { Task } from "../../../src/types/Task";
+import { withSentry } from "@sentry/nextjs";
+import { errorLogger } from "../../../ErrorLogger/errorLogger";
 
 const deleteRelatedSchedules = (scheduleId: string) =>
   admin.firestore().collection("schedules").doc(scheduleId).delete();
-
-// const deleteRelatedSchedules = (scheduleIds: string[]) =>
-//   Promise.all(
-//     scheduleIds.map((id) =>
-//       admin.firestore().collection("schedules").doc(id).delete()
-//     )
-//   );
 
 const schema = z.object({
   id: z.string(),
 });
 
-export default async function handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -45,6 +40,9 @@ export default async function handler(
     schedule.exists && (await deleteRelatedSchedules(input.id));
     res.status(200).json({ msg: "task successfully deleted" });
   } catch (error) {
+    errorLogger("BACKEND: Error deleting task", error)
     res.status(400).json({ msg: "item not found" });
   }
 }
+
+export default withSentry(handler)

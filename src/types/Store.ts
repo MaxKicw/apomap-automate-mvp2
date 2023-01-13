@@ -1,4 +1,5 @@
 import { User } from "firebase/auth";
+import { string } from "zod";
 import type { DialogSource } from "./DialogSource";
 import { Task } from "./Task";
 export interface Store {
@@ -10,4 +11,15 @@ export interface Store {
   showDialog: ({ type, task }: { type: string; task?: Task }) => void;
   user: User | null;
   setUser: (user: User | null) => void;
+  colorScheme: string;
+  setColorScheme: (colorScheme: string) => void;
+  toast: {
+    show: boolean,
+    toastType: string,
+    message: string
+  };
+  showToast: ({toastType, message}:{toastType:string; message:string}) => void;
+ 
+ 
+ 
 }

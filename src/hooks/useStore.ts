@@ -14,4 +14,19 @@ export const useStore = create<Store>()((set) => ({
   // User-Management
   user: null,
   setUser: (user) => set(() => ({ user: user })),
+  // Color Scheme Management
+  colorScheme: "light",
+  setColorScheme: (colorScheme: string) =>
+    set(() => ({ colorScheme: colorScheme })),
+  // Toast Management
+  toast: {
+    show: false,
+    toastType: "",
+    message: ""
+  },
+  showToast: ({toastType, message}) => set(() => ({toast: {
+    show: true,
+    toastType: toastType,
+    message: message
+  }})),
 }));

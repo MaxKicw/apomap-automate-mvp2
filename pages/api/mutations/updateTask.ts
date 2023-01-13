@@ -6,6 +6,8 @@ import hasAuth from "../utils/hasAuth";
 import { Task } from "../../../src/types/Task";
 import dayjs from "dayjs";
 import * as jwt from "jsonwebtoken";
+import { withSentry } from "@sentry/nextjs";
+import { errorLogger } from "../../../ErrorLogger/errorLogger";
 
 const schema = z.object({
   id: z.string(),
@@ -23,7 +25,7 @@ const verifyToken = (token: string) =>
     return decoded;
   });
 
-export default async function handler(
+ async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -53,7 +55,9 @@ export default async function handler(
       res.status(400).json({ msg: "item not found" });
     }
   } catch (error) {
-    console.log(error);
+    errorLogger("BACKEND: Error updating task", error)
     res.status(400).json({ msg: "mutation was not successfull" });
   }
 }
+
+export default withSentry(handler)

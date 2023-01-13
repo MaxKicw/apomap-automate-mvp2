@@ -8,7 +8,7 @@ type WrapperProps = {
 
 const Wrapper: FunctionComponent<WrapperProps> = ({ children }) => {
   const store = useStore();
-  const { setAuthListener, refreshToken } = useAuth({store});
+  const { setAuthListener, refreshToken } = useAuth({ store });
 
   useEffect(() => {
     setAuthListener();
@@ -21,7 +21,7 @@ const Wrapper: FunctionComponent<WrapperProps> = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <div className="w-[100vw flex h-[100vh]">{children}</div>;
+  return <div className="w-[100vw] h-[100vh]">{children}</div>;
 };
 
 export default Wrapper;

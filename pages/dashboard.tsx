@@ -17,6 +17,8 @@ import { collection, query, where } from "firebase/firestore";
 import { firebaseAdmin } from "../firebaseServer";
 import TaskComponent from "../src/features/core/TaskComponent";
 import { Task } from "../src/types/Task";
+import { Toggle } from "../src/components/Toggle";
+import { Segment } from "../src/analytics.ts/segmentAnalyticsLogger";
 
 const Dashboard: NextPage<{ uid: string }> = ({ uid }) => {
   const router = useRouter();
@@ -34,49 +36,83 @@ const Dashboard: NextPage<{ uid: string }> = ({ uid }) => {
   }, [snapshot]);
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center  bg-primary-500 bg-opacity-20">
-      <Title order={5} className="absolute  top-4 left-4">
-        {t("dashboard.title", { businessName: uid })}
-      </Title>
-      {loading ? (
-        <div className="flex flex-col">
-          <Skeleton height={70} width="100%" />
-          <Skeleton height={70} width="100%" />
-          <Skeleton height={70} width="100%" />
-          <Skeleton height={70} width="100%" />
-        </div>
-      ) : (
-        <div className="w-[90%] lg:w-[30%]">
-          {tasks?.map((task, index) => (
-            <TaskComponent key={task.id} index={index} task={task} />
-          ))}
-        </div>
-      )}
-      <Button
-        className="mt-2"
-        radius="xl"
-        onClick={() => store.showDialog({ type: "taskModal" })}
-      >
-        {t("dashboard.createTask")}
-      </Button>
-      <Button
-        onClick={() => signOut("/")}
-        variant="subtle"
-        className="mt-2"
-        radius="xl"
-      >
-        LogOut
-      </Button>
-      <Link href="/testPage">
+    <div className="flex h-full w-full flex-col items-center justify-between p-4 gap-8">
+      <div className="flex justify-between items-center w-full">
+        <Title order={5}>{t("dashboard.title", { businessName: uid })}</Title>
+        <Toggle />
+      </div>
+      <div className="flex flex-col justify-start items-center w-full h-full">
+        {loading ? (
+          <div className="flex flex-col">
+            <Skeleton height={70} width="100%" />
+            <Skeleton height={70} width="100%" />
+            <Skeleton height={70} width="100%" />
+            <Skeleton height={70} width="100%" />
+          </div>
+        ) : (
+          <div className="w-[90%] lg:w-[30%]">
+            {tasks?.map((task, index) => (
+              <TaskComponent key={task.id} index={index} task={task} />
+            ))}
+          </div>
+        )}
         <Button
-          // onClick={() => router.push("../pages/testPage.tsx")}
+          className="mt-2"
+          radius="xl"
+          onClick={() => {
+            store.showDialog({ type: "taskModal" });
+            Segment.track({
+              anonymousId: "create-task-btn",
+              event: "Create Task Button Clicked",
+            });
+          }}
+        >
+          {t("dashboard.createTask")}
+        </Button>
+        <Button
+          onClick={() => {
+            signOut("/");
+            Segment.track({
+              anonymousId: "logout-btn",
+              event: "User Logged Out",
+            });
+          }}
           variant="subtle"
           className="mt-2"
           radius="xl"
         >
-          Test Page
+          LogOut
         </Button>
-      </Link>
+        <Link href="/testPage">
+          <Button
+            onClick={() =>
+              Segment.page({
+                anonymousId: "test-page",
+                type: "Page",
+                properties: {
+                  origin: "Dashboard: Test Page Button",
+                  action: "Navigates to test page",
+                },
+              })
+            }
+            variant="subtle"
+            className="mt-2"
+            radius="xl"
+          >
+            Test Page
+          </Button>
+        </Link>
+        {/* <Button
+          onClick={() => {
+            throw new Error("Error Button Clicked");
+          }}
+          variant="subtle"
+          className="mt-2"
+          radius="xl"
+        >
+          Error Button
+        </Button> */}
+      </div>
     </div>
   );
 };
