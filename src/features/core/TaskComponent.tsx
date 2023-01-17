@@ -29,7 +29,7 @@ const TaskComponent: FunctionComponent<TaskComponentProps> = ({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5, delay: 0.4 * (index + 0.5) }}
-      className="w-full my-2 rounded-md  p-4 flex shadow-sm items-center justify-between"
+      className="w-full rounded-md p-2 flex shadow-sm items-center justify-between"
       style={{
         backgroundColor:
           store.colorScheme === "dark"
@@ -38,27 +38,26 @@ const TaskComponent: FunctionComponent<TaskComponentProps> = ({
         color: store.colorScheme === "dark" ? theme.white : theme.black,
       }}
     >
-      <div>
-        <Text className="font-bold">{task.customerName}</Text>
-        <div className="flex flex-row items-center">
-          <Text c="dimmend" fz="xs">
-            {dayjs(task.createdAt).format("DD.MM.YY / HH:mm")}
-          </Text>
-          {task.updatedAt && (
-            <Text fz="xs" className="ml-2" c={theme.colors.orange[8]}>
-              {`(${dayjs(task.updatedAt).format("DD.MMM")})`}
+      <div className="flex justify-between items-center w-full">
+        <div>
+          <Text className="font-bold">{task.customerName}</Text>
+          <div className="flex flex-row items-center">
+            <Text c="dimmend" fz="xs">
+              {dayjs(task.createdAt).format("DD.MM.YY / HH:mm")}
             </Text>
-          )}
+            {task.updatedAt && (
+              <Text fz="xs" className="ml-2" c={theme.colors.orange[8]}>
+                {`(${dayjs(task.updatedAt).format("DD.MMM")})`}
+              </Text>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="flex flex-col items-end">
         <Badge
           sx={{ backgroundColor: theme.colors.blue[9], color: theme.white }}
-          className="mb-2"
         >
           {task.status}
         </Badge>
-        <div className="flex flow-col">
+        <div className="flex">
           <ActionIcon
             onClick={() => {
               store.showDialog({ type: "taskModal", task });

@@ -1,5 +1,6 @@
 import type { FunctionComponent } from "react";
 import { useStore } from "../../hooks/useStore";
+import { DriverModal } from "./DriverModal/DriverModal";
 import { SignInModal } from "./SignInModal/SignInModal";
 import { SignUpModal } from "./SignUpModal/SignUpModal";
 import { TaskModal } from "./TaskModal/TaskModal";
@@ -13,6 +14,9 @@ export const DialogManager: FunctionComponent = () => {
       return <SignInModal />;
     case "taskModal":
       return <TaskModal />;
+      return <SignInModal />;
+    case "driverModal":
+      return <DriverModal />;
     default:
       return <div></div>;
   }
