@@ -18,10 +18,9 @@ import utc from "dayjs/plugin/utc";
 import { useTranslation } from "next-i18next";
 import type { FunctionComponent } from "react";
 import { useMutation } from "react-query";
-// import { scheduleTask } from "../../../actions/actions";
 import { useStore } from "../../../hooks/useStore";
 import callCreateDriver from "../../../mutations/Driver/callCreateDriver";
-// import updateTask from "../../../mutations/updateTask";
+import callUpdateDriver from "../../../mutations/Driver/callUpdateDriver";
 import { Segment } from "../../../analytics.ts/segmentAnalyticsLogger";
 import { errorLogger } from "../../../../ErrorLogger/errorLogger";
 dayjs.extend(utc);
@@ -34,8 +33,8 @@ export const DriverModal: FunctionComponent<DriverModalProps> = ({}) => {
   const store = useStore();
   const { t } = useTranslation();
   const { isLoading, mutate: callCreate } = useMutation(callCreateDriver);
-  //   const { mutate: schedule } = useMutation(scheduleTask);
-  //   const { isLoading: isUpdating, mutate: update } = useMutation(updateTask);
+  const { isLoading: isUpdating, mutate: update } =
+    useMutation(callUpdateDriver);
 
   const form = useForm({
     initialValues: {
@@ -80,35 +79,33 @@ export const DriverModal: FunctionComponent<DriverModalProps> = ({}) => {
     );
   };
 
-  //   const save = async () => {
-  //     store.shownDialog.task &&
-  //       update(
-  //         {
-  //           id: store.shownDialog.task.id,
-  //           customerName: form.values.customerName,
-  //           coords: {
-  //             lat: parseFloat(form.values.lat),
-  //             lon: parseFloat(form.values.lon),
-  //           },
-  //         },
-  //         {
-  //           onSuccess: () => {
-  //             Segment.track({
-  //               anonymousId: "update-task-info",
-  //               type: "Track",
-  //               event: "Update Task",
-  //               properties: {
-  //                 origin: "Task Modal",
-  //               },
-  //             });
-  //             store.closeDialog();
-  //           },
-  //           onError: (err) => {
-  //             errorLogger("Error while updating task", err);
-  //           },
-  //         }
-  //       );
-  //   }
+  const save = async () => {
+    store.shownDialog.driver &&
+      update(
+        {
+          id: store.shownDialog.driver.id,
+          driverName: form.values.driverName,
+          color: form.values.color,
+          vehicles: form.values.vehicles,
+        },
+        {
+          onSuccess: () => {
+            Segment.track({
+              anonymousId: "update-driver-info",
+              type: "Track",
+              event: "Update Driver",
+              properties: {
+                origin: "Driver Modal",
+              },
+            });
+            store.closeDialog();
+          },
+          onError: (err) => {
+            errorLogger("Error while updating driver", err);
+          },
+        }
+      );
+  };
 
   return (
     <Modal
@@ -126,7 +123,6 @@ export const DriverModal: FunctionComponent<DriverModalProps> = ({}) => {
       <MultiSelect
         data={vehicleTypes}
         {...form.getInputProps("vehicles")}
-        // onChange={(e) => setSelectedVehicle(e)}
         label="Choose vehicle type"
         placeholder="You can select multiple options"
         clearButtonLabel="Clear selection"
@@ -137,7 +133,6 @@ export const DriverModal: FunctionComponent<DriverModalProps> = ({}) => {
         mt={14}
         size="sm"
         fullWidth
-        // onChange={(e) => setSelectedColor(e)}
         {...form.getInputProps("color")}
       />
 
@@ -145,8 +140,8 @@ export const DriverModal: FunctionComponent<DriverModalProps> = ({}) => {
         {store.shownDialog.driver ? (
           <Button
             disabled={!form.isTouched()}
-            // loading={isUpdating}
-            // onClick={save}
+            loading={isUpdating}
+            onClick={save}
             radius="xl"
           >
             {t("common.terms.save")}

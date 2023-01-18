@@ -1,13 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
-import * as admin from "firebase-admin";
-import { late, z } from "zod";
-import hasAuth from "../utils/hasAuth";
-import { Task } from "../../../src/types/Task";
-import dayjs from "dayjs";
-import * as jwt from "jsonwebtoken";
 import { withSentry } from "@sentry/nextjs";
+import dayjs from "dayjs";
+import * as admin from "firebase-admin";
+import * as jwt from "jsonwebtoken";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { z } from "zod";
 import { errorLogger } from "../../../ErrorLogger/errorLogger";
+import { Task } from "../../../src/types/Task";
+import hasAuth from "../utils/hasAuth";
 
 const schema = z.object({
   id: z.string(),

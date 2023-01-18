@@ -10,12 +10,9 @@ import hasAuth from "../../utils/hasAuth";
 
 const schema = z.object({
     id: z.string(),
-    driverName: z.string(),
-    imageURL: z.string(),
-    color: z.string(),
-    employer: z.string(),
-    vehicles: z.string().array(),
-   
+    driverName: z.string().optional(),
+    color: z.string().optional(),
+    vehicles: z.string().array().optional()
 });
 
 const verifyToken = (token: string) =>
@@ -48,9 +45,9 @@ const verifyToken = (token: string) =>
         .doc(input.id)
         .update({
           ...(input.driverName && { driverName: input.driverName }),
-          ...(input.imageURL && { imageURL: input.imageURL }),
           ...(input.color && { color: input.color }),
           ...(input.vehicles && { vehicles: input.vehicles }),
+          employer: token.uid,
           updatedAt: dayjs().toISOString(),
         });
       res.status(200).json({ msg: "driver successfully updated" });

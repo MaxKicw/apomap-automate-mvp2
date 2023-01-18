@@ -231,15 +231,15 @@ const Dashboard: NextPage<{ uid: string }> = ({ uid }) => {
               />
             </Box>
             {/* Tour Table */}
-            <Box className="w-full h-2/5 rounded-md bg-pink-300">
+            <Box className="flex flex-col justify-start items-start gap-4 w-full h-2/5 rounded-md">
               {driverLoading ? (
                 <Skeleton height={70} width="100%" />
               ) : (
                 drivers?.map((driver) => (
                   <DriverComponent
-                    key={driver.driverName}
+                    key={driver.id}
                     driver={driver}
-                    initialSpacing={1}
+                    initialSpacing={0}
                   />
                 ))
               )}

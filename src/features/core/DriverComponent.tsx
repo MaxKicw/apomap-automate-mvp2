@@ -38,7 +38,7 @@ const DriverComponent: FunctionComponent<DriverComponentProps> = ({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5, delay: 0.4 * (initialSpacing + 0.5) }}
-      className="w-full h-96 rounded-md shadow-sm"
+      className="w-full rounded-md shadow-sm"
       style={{
         backgroundColor:
           store.colorScheme === "dark"
@@ -59,7 +59,7 @@ const DriverComponent: FunctionComponent<DriverComponentProps> = ({
               Vehicles:
             </Text>
             {driver.vehicles.map((vehicle, index) => (
-              <Badge key={index} size="xs">
+              <Badge key={index} size="sm">
                 {vehicle}
               </Badge>
             ))}
