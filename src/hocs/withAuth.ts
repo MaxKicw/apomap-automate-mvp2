@@ -7,9 +7,12 @@ export function withAuth(gssp: GetServerSideProps) {
   return async (context: GetServerSidePropsContext) => {
     let userUid;
     try {
+      console.log("checking");
       const cookies = nookies.get(context);
       const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
+      console.log(token);
       const { uid } = token;
+      console.log(uid);
       userUid = uid;
       if (uid) {
         const doc = await firestore().collection("accounts").doc(uid).get();
