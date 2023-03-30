@@ -3,6 +3,7 @@ import { useStore } from "../../hooks/useStore";
 import { DriverModal } from "./DriverModal/DriverModal";
 import { SignInModal } from "./SignInModal/SignInModal";
 import { SignUpModal } from "./SignUpModal/SignUpModal";
+import TaskDetailsModal from "./TaskDetails/TaskDetailsModal";
 import { TaskModal } from "./TaskModal/TaskModal";
 
 export const DialogManager: FunctionComponent = () => {
@@ -14,9 +15,10 @@ export const DialogManager: FunctionComponent = () => {
       return <SignInModal />;
     case "taskModal":
       return <TaskModal />;
-      return <SignInModal />;
     case "driverModal":
       return <DriverModal />;
+    case "taskDetails":
+      return <TaskDetailsModal />;
     default:
       return <div></div>;
   }

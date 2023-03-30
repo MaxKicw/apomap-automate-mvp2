@@ -20,6 +20,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       <Head>
         <title> apomap Automate </title>
+        <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
       </Head>
       <MantineProvider
         theme={

@@ -55,7 +55,7 @@ const Dashboard: NextPage<{ uid: string }> = ({ uid }) => {
     query(collection(db, "drivers"), where("employer", "==", uid))
   );
   const [tasksSnapshot, tasksLoading] = useCollection(
-    query(collection(db, "tasks"), where("owner", "==", uid))
+    query(collection(db, "tasks"), where("task_owner", "==", uid))
   );
 
   useEffect(() => {
@@ -75,13 +75,18 @@ const Dashboard: NextPage<{ uid: string }> = ({ uid }) => {
         className="flex flex-col justify-between items-center p-4 gap-4 h-full w-[8%] overflow-hidden"
       >
         <Image fit="cover" src="/img/logo.png" alt="apomap logo" />
+
         <Box className="flex flex-col justify-between items-center gap-4 my-4 p-2">
-          <Box className="flex flex-col justify-center items-center p-2 cursor-pointer w-full hover:bg-sky-700">
+          <Link
+            href="/upgrade"
+            passHref
+            className="flex flex-col justify-center items-center p-2 no-underline text-inherit cursor-pointer w-full hover:bg-sky-700"
+          >
             <IconShoppingCart />
             <Text size={12} className="capitalize text-center">
               Jetzt Upgraden
             </Text>
-          </Box>
+          </Link>
           <Box className="flex flex-col justify-center items-center p-2 cursor-pointer w-full hover:bg-sky-700">
             <IconHome2 />
             <Text size={12} className="capitalize text-center">

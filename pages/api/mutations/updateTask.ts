@@ -11,9 +11,18 @@ import hasAuth from "../utils/hasAuth";
 
 const schema = z.object({
   id: z.string(),
-  customerName: z.string().optional(),
-  coords: z.object({ lat: z.number(), lon: z.number() }).optional(),
   status: z.string().optional(),
+  customerName: z.string(),
+  customer_mail: z.string(),
+  customer_mobile: z.string().optional(),
+  customer_phone: z.string().optional(),
+  task_address: z.string(),
+  task_date: z.string(),
+  task_note: z.string().optional(),
+  task_open_amount: z.string().optional(),
+  task_priority: z.string().optional(),
+  task_tags: z.string().array().optional(),
+  task_type: z.string(),
 });
 
 const verifyToken = (token: string) =>
@@ -39,15 +48,24 @@ const verifyToken = (token: string) =>
     //Make mutation
     const doc = await admin.firestore().collection("tasks").doc(input.id).get();
     const data = doc.data() as Task;
-    if (data.owner === token.uid) {
+    if (data.task_owner === token.uid) {
       await admin
         .firestore()
         .collection("tasks")
         .doc(input.id)
         .update({
-          ...(input.customerName && { customerName: input.customerName }),
-          ...(input.coords && { coords: input.coords }),
           ...(input.status && { status: input.status }),
+          ...(input.customerName && { customerName: input.customerName }),
+          ...(input.customer_mail && {customer_mail: input.customer_mail} ),
+          ...(input.customer_mobile && {customer_mobile: input.customer_mobile} ),
+          ...(input.customer_phone && {customer_phone: input.customer_phone} ),
+          ...(input.task_address && {task_address: input.task_address} ),
+          ...(input.task_date && {task_date: input.task_date} ),
+          ...(input.task_note && {task_note: input.task_note} ),
+          ...(input.task_open_amount && {task_open_amount: input.task_open_amount} ),
+          ...(input.task_priority && {task_priority: input.task_priority} ),
+          ...(input.task_tags && {task_tags: input.task_tags} ),
+          ...(input.task_type && {task_type: input.task_type} ),
           updatedAt: dayjs().toISOString(),
         });
       res.status(200).json({ msg: "task successfully updated" });

@@ -9,7 +9,7 @@ export interface Store {
   decrease: (input: number) => void;
   shownDialog: DialogSource;
   closeDialog: () => void;
-  showDialog: ({ type, task }: { type: string; task?: Task; driver?: Driver }) => void;
+  showDialog: ({ type, task }: { type: string; task?: Task; driver?: Driver, taskDetails?: Task }) => void;
   user: User | null;
   setUser: (user: User | null) => void;
   colorScheme: string;
